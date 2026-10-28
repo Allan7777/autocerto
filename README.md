@@ -1,18 +1,24 @@
 # AutoCerto Academy
 
-Site de estudos independente para suporte a sistemas de gestão automotiva.
+Plataforma independente de estudos sobre fluxos de suporte do sistema AutoCerto, construída a partir das transcrições de treinamentos fornecidas pelo usuário.
 
-## Funcionalidades
-- 19 dúvidas frequentes com pesquisa e filtros
-- 5 tutoriais de investigação e atendimento
-- 3 simulações interativas com feedback e pontuação
-- Layout responsivo, sem dependências externas
+## Conteúdo
 
-## Como executar
-Abra `index.html` em um navegador.
+- 4 módulos: Administrativo, Avaliação de Veículos, Gestor de Leads e Financeiro
+- 49 aulas com explicações, fluxos e orientações de suporte
+- 12 casos de dúvidas frequentes e diagnósticos
+- 10 questões interativas com correção
+- Progresso das aulas salvo localmente no navegador
+- Pesquisa por palavras-chave e layout responsivo
+
+## Executar
+
+Abra `index.html` em qualquer navegador moderno. Não há dependências externas.
 
 ## Publicar com GitHub Pages
-Em **Settings → Pages → Build and deployment**, escolha **Deploy from a branch**, `main`, `/ (root)` e salve. A publicação pode levar alguns minutos.
 
-## Aviso
-Este é um projeto independente, não oficial e não afiliado à AutoCerto. Procedimentos específicos, menus e integrações devem ser validados com a documentação e o ambiente autorizados da empresa. Não inclua dados reais de clientes nos exercícios.
+Em **Settings → Pages → Build and deployment**, selecione **Deploy from a branch**, branch `main`, pasta `/ (root)` e salve. O endereço esperado após ativação é https://allan7777.github.io/autocerto/.
+
+## Avisos
+
+Este projeto é independente e não oficial. Os procedimentos refletem o conteúdo dos treinamentos fornecidos e não foram validados contra a versão atual do software. Os pontos não demonstrados ou incertos são sinalizados. Não use credenciais nem dados reais de clientes nos exercícios.
