@@ -9,7 +9,7 @@ const link=document.createElement('a');link.href='./minha-conta.html';link.style
 const setStatus=t=>{status.firstChild.textContent=t+' ';};
 try{
  const mod=await import('https://esm.sh/@supabase/supabase-js@2.57.0');const client=mod.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
- let user=(await client.auth.getUser()).data.user;if(!user){setStatus('☁ Dados apenas neste navegador.');return}
+ let user=(await client.auth.getUser()).data.user;if(!user){setStatus('☁ Dados apenas neste navegador.');return} const ownerKey='academy-cloud-owner';const previousOwner=localStorage.getItem(ownerKey);if(previousOwner&&previousOwner!==user.id){for(const k of Object.keys(localStorage)){if(eligible(k))localStorage.removeItem(k)}}localStorage.setItem(ownerKey,user.id);
  let syncing=false,ready=false;let snapshot=new Map();
  const readLocal=()=>{const m=new Map();for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(eligible(k))m.set(k,localStorage.getItem(k))}return m};
  const {data:rows,error}=await client.from('academy_user_data').select('item_key,item_value').eq('user_id',user.id);if(error)throw error;
