@@ -81,7 +81,7 @@ async function simulatorRequest(action){
  const {data:{session:login}}=await client.auth.getSession();
  if(!login)throw Error('Faça login em Minha conta para usar o cliente com IA.');
  const reference={problem:session.r.problem,diagnosis:session.r.diagnosis,solution:session.r.solution,result:session.r.result};
- const response=await fetch(AI_URL,{method:'POST',headers:{'content-type':'application/json','authorization':'Bearer '+login.access_token,'apikey':AI_PUBLIC_KEY},body:JSON.stringify({action,reference,history:session.history})});
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),35000);let response;try{response=await fetch(AI_URL,{method:'POST',signal:controller.signal,headers:{'content-type':'application/json','authorization':'Bearer '+login.access_token,'apikey':AI_PUBLIC_KEY},body:JSON.stringify({action,reference,history:session.history})})}finally{clearTimeout(timeout)}
  let data;try{data=await response.json()}catch{throw Error('O servidor de IA não retornou uma resposta válida.')}
  if(!response.ok||data.error)throw Error(data.error||'Erro ao conectar à IA.');
  return data;
@@ -89,15 +89,22 @@ async function simulatorRequest(action){
 async function send(){
  if(!session||session.finished||session.busy){return}
  var t=entry.value.trim();if(!t)return;
- bubble('agente',t);session.turns.push(t);session.history.push({role:'user',content:t});entry.value='';session.stage++;
+ bubble('agente',t);session.turns.push(t);session.history.push({role:'user',content:t});entry.value='';session.stage++;review.replaceChildren();
  session.busy=true;$('chat-send').disabled=true;$('chat-finish').disabled=true;$('chat-round').textContent='Caso '+session.r.id+' · Cliente digitando...';
  try{
   var data=await simulatorRequest('reply');if(!session||session.finished)return;
   var answer=String(data.answer||'Pode me explicar melhor?').slice(0,1000);bubble('cliente',answer);session.history.push({role:'assistant',content:answer});
   $('chat-round').textContent='Caso '+session.r.id+' · Em atendimento';
  }catch(e){
-  var error=document.createElement('p');error.className='muted tiny';error.textContent='IA: '+e.message+' Sua mensagem foi preservada. Faça login ou tente enviar outra mensagem.';review.replaceChildren(error);
-  $('chat-round').textContent='Caso '+session.r.id+' · IA indisponível';
+  var msg=e.name==='AbortError'?'A resposta demorou demais. Tente novamente.':e.message;
+  bubble('cliente','[Conexão com a IA interrompida: '+msg+']');
+  var error=document.createElement('div');error.className='answer';
+  var p=document.createElement('p');p.textContent='A IA não respondeu. Sua mensagem foi mantida. '+msg;error.appendChild(p);
+  var retry=document.createElement('button');retry.className='btn primary';retry.textContent='Tentar resposta novamente';
+  retry.onclick=async function(){if(!session||session.busy||session.finished)return;session.busy=true;retry.disabled=true;$('chat-send').disabled=true;$('chat-finish').disabled=true;$('chat-round').textContent='Tentando reconectar...';try{var data=await simulatorRequest('reply');var answer=String(data.answer||'Pode me explicar melhor?').slice(0,1000);bubble('cliente',answer);session.history.push({role:'assistant',content:answer});review.replaceChildren();$('chat-round').textContent='Caso '+session.r.id+' · Em atendimento'}catch(ex){p.textContent='A IA ainda não respondeu: '+(ex.name==='AbortError'?'Tempo de espera esgotado.':ex.message)}finally{session.busy=false;retry.disabled=false;$('chat-send').disabled=false;$('chat-finish').disabled=false}};error.appendChild(retry);
+  var account=document.createElement('a');account.href='./minha-conta.html';account.textContent=' Conferir login em Minha conta';account.style.marginLeft='12px';error.appendChild(account);
+  review.replaceChildren(error);
+  $('chat-round').textContent='Caso '+session.r.id+' · Falha na conexão';
  }finally{if(session){session.busy=false;if(!session.finished){$('chat-send').disabled=false;$('chat-finish').disabled=false;entry.focus()}}}
 }
 async function evaluate(){
