@@ -46,29 +46,30 @@ function start(id){
  bubble('cliente',intros[variation]+issue+'.');entry.focus()
 }
 function followup(t){
- if(!session)return;var r=session.r,n=norm(t),step=session.stage;
- var ask=/\?|qual |quais |pode me|consegue me|me informa|me manda|envie|preciso (da|do|de) |poderia|me confirma|me diz|me passe/.test(n);
+ if(!session)return;
+ var r=session.r,n=norm(t).trim(),step=session.stage,variation=session.variation;
+ var greeting=/^(oi|ola|opa|bom dia|boa tarde|boa noite|tudo bem|tudo certo|como vai|fala)[!?. ,]*(tudo bem[!?. ]*)?$/.test(n)||/^(bom dia|boa tarde|boa noite)[!,. ]*tudo bem[!? .]*$/.test(n);
+ var waiting=/^(um momento|so um momento|aguarde|vou verificar|ja verifico|estou verificando)[.! ]*$/.test(n);
+ var ask=/\?|qual |quais |pode me|consegue me|me informa|me manda|envie|poderia|me confirma|me diz|me passe/.test(n);
  var check=/verific|confer|chec|analis|test|print|captura|erro|placa|modelo|versao|ano|documento|status|cadastro|acesso|integracao/.test(n);
- var guide=/acesse|clique|selecione|abra |entre |ajuste|altere|atualize|cadastre|envie|solicite|contate|entre em contato|encaminhe|publique|tente novamente|republique|precisa |necessario |nao e possivel|nao consegue|pelo |na aba|no menu|no modulo/.test(n);
+ var guide=/acesse|clique|selecione|abra |entre |ajuste|altere|atualize|cadastre|solicite|contate|entre em contato|encaminhe|publique|tente novamente|republique|precisa |necessario |nao e possivel|nao consegue|pelo |na aba|no menu|no modulo/.test(n);
  var validate=/conseguiu|deu certo|funcionou|resolveu|pode testar|tente novamente|me confirma|me avise|retorne|ficou certo/.test(n);
- session.investigated=session.investigated||ask||check;session.guided=session.guided||guide;session.validated=session.validated||validate;
+ if(greeting){bubble('cliente',['Boa tarde! Tudo bem, e você?','Oi! Tudo bem sim. Consegue me ajudar?','Tudo certo! Obrigado por atender.'][variation%3]);return}
+ if(waiting){bubble('cliente',['Tudo bem, aguardo.','Certo, obrigado!'][variation%2]);return}
+ session.investigated=session.investigated||ask||check;
+ session.guided=session.guided||guide;
+ session.validated=session.validated||validate;
  var replies=[];
- if(ask||check){
-  if(/placa/.test(n))replies=['Posso te passar a placa. O que você precisa conferir nela?','Tenho a placa aqui. Você consegue verificar por ela?'];
-  else if(/print|captura|imagem/.test(n))replies=['Posso mandar um print. Qual tela você precisa ver?','Vou separar a imagem do erro. O que mais precisa?'];
-  else if(/ano|modelo|versao|documento/.test(n))replies=['Posso confirmar no documento. Você precisa do ano de fabricação e do modelo?','O veículo está aqui no cadastro. Qual informação devo conferir?'];
-  else replies=['Certo. O que você precisa que eu confirme para conseguir resolver?','Entendi. Estou no sistema agora. Qual informação você quer que eu verifique?'];
- }else if(guide){
-  replies=['Estou tentando fazer isso, mas não achei a opção. Em qual menu eu entro?','Entendi o caminho. Depois de fazer isso, como sei se deu certo?','Vou tentar aqui. Se aparecer o mesmo erro, o que devo conferir?'];
- }else if(/um momento|aguard|vou verificar|ja verifico/.test(n)){
-  replies=['Tudo bem, fico no aguardo.','Certo, obrigado.'];
- }else if(/obrigad|disposicao|posso ajudar em algo mais|encerrar/.test(n)){
-  replies=['Obrigado! Só queria confirmar se já posso testar de novo.','Certo, vou conferir aqui.'];
- }else{
-  replies=['Entendi, mas ainda não sei como resolver. Você pode me orientar no sistema?','Certo. Qual é o próximo passo para solucionar isso?'];
- }
- var chosen=replies[(session.variation+step)%replies.length];
- if(step>=5)chosen=session.guided?'Obrigado. Vou seguir a orientação e verificar o resultado.':'Ainda preciso saber o que fazer para resolver isso.';
+ if(/placa/.test(n)&&ask)replies=['A placa é a que estou tentando anunciar. Você consegue verificar o cadastro por ela?','Claro, vou te passar a placa para conferir.'];
+ else if(/print|captura|imagem/.test(n)&&ask)replies=['Posso mandar o print do erro, sim.','Vou tirar um print da tela e te enviar.'];
+ else if(/ano|modelo|versao|documento/.test(n)&&ask)replies=['É uma moto seminova. Posso conferir o ano e o modelo no documento.','No cadastro está um ano, mas posso olhar no documento para confirmar.'];
+ else if(/qual (erro|mensagem)|o que aparece|aparece (algum|uma)|erro que/.test(n))replies=['Quando tento publicar, a versão não aparece como disponível.','Não consigo concluir a publicação; fica dando erro na versão.'];
+ else if(ask||check)replies=['Claro, posso verificar isso. Qual dado você precisa?','Consigo conferir aqui. Só me diga onde olhar.'];
+ else if(guide)replies=['Entendi. Vou tentar fazer esse ajuste.','Certo, estou seguindo os passos, mas ainda preciso conferir se publicou.','Vou fazer isso e testar de novo.'];
+ else if(/obrigad|disposicao|posso ajudar em algo mais|encerrar/.test(n))replies=['Obrigado pela ajuda!','Tudo bem, vou conferir aqui.'];
+ else replies=['Certo, estou acompanhando.','Entendi. Pode continuar, por favor?'];
+ var chosen=replies[(variation+step)%replies.length];
+ if(step>=6&&session.guided)chosen='Certo, vou seguir essa orientação e conferir o resultado.';
  bubble('cliente',chosen);
 }
 function send(){
