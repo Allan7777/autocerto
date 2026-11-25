@@ -3,7 +3,7 @@
 .btn{background:var(--surface);border-color:var(--line);color:var(--brand-ink)}
 .btn:hover{background:var(--brand-tint);border-color:var(--brand);color:var(--brand-ink)}
 .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.btn.primary:hover{background:var(--brand-ink);border-color:var(--brand-ink);color:#fff}
+.btn.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover);color:#fff}
 .panel{display:none;margin:0;padding:0;border:0;background:none}
 .panel.active{display:block}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
@@ -22,7 +22,7 @@
 .case-tile.selected{border-color:var(--brand);background:var(--brand-tint)}
 .case-tile small{color:var(--brand-ink)}
 .study-area{margin-top:18px}
-.step{font-size:13.5px;font-weight:700;color:var(--brand)}
+.step{font-size:13.5px;font-weight:700;color:var(--brand-text)}
 .answer dt{margin-top:10px;font-weight:800;color:var(--brand-ink)}
 .answer dd{margin:2px 0 9px}
 .question{margin:16px 0;font-size:19px;font-weight:700}
@@ -31,7 +31,7 @@
 .choice:hover{border-color:var(--brand);background:var(--brand-tint);color:var(--ink)}
 .choice.chosen{border-color:var(--brand);background:var(--brand-tint)}
 .green{color:var(--ok)}
-.orange{color:#8A5A00}
+.orange{color:var(--amber-ink)}
 .case{display:none}
 .footer{margin-top:32px;font-size:13.5px;color:var(--ink-3)}
 .notebook{white-space:pre-wrap}
@@ -45,7 +45,7 @@
 .chat-review-grid>div{padding:12px;border:1px solid var(--line);border-radius:10px}
 .chat-review-grid strong{display:block;font-size:22px}
 textarea{min-height:130px}
-@media(max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.tab{flex:1;padding:10px}.stat{padding:14px}.stat strong{font-size:24px}.chat-review-grid{grid-template-columns:1fr}.chat-bubble{max-width:95%}}</style></head><body><script src="./site-nav.js"></script><main class="page wide"><p class="eyebrow" style="margin-top:30px">Seu espaço de treinamento</p><h1>Aprenda a atender na prática.</h1><p class="sub">Estude situações reais, treine decisões, responda por escrito ou por voz e registre o aprendizado no caderno.</p><nav class="tabs" aria-label="Áreas de estudo"><button class="tab active" data-tab="dashboard">Visão geral</button><button class="tab" data-tab="simulado">Simulado</button><button class="tab" data-tab="estudar">Treino de atendimento</button><button class="tab" data-tab="caderno">Meu caderno</button><button class="tab" data-tab="resumo">Resumo final</button></nav>
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.tab{flex:1;padding:10px}.stat{padding:14px}.stat strong{font-size:24px}.chat-review-grid{grid-template-columns:1fr}.chat-bubble{max-width:95%}}</style><script src="./theme.js"></script></head><body><script src="./site-nav.js"></script><main class="page wide"><p class="eyebrow" style="margin-top:30px">Seu espaço de treinamento</p><h1>Aprenda a atender na prática.</h1><p class="sub">Estude situações reais, treine decisões, responda por escrito ou por voz e registre o aprendizado no caderno.</p><nav class="tabs" aria-label="Áreas de estudo"><button class="tab active" data-tab="dashboard">Visão geral</button><button class="tab" data-tab="simulado">Simulado</button><button class="tab" data-tab="estudar">Treino de atendimento</button><button class="tab" data-tab="caderno">Meu caderno</button><button class="tab" data-tab="resumo">Resumo final</button></nav>
 <section class="panel active" id="dashboard"><div class="stats"><div class="stat"><strong id="stat-total">21</strong><span>Casos reais</span></div><div class="stat"><strong id="stat-done">0</strong><span>Casos estudados</span></div><div class="stat"><strong id="stat-rate">0%</strong><span>Progresso</span></div><div class="stat"><strong id="stat-score">—</strong><span>Último simulado</span></div></div><div class="two"><div class="card"><h2>Seu progresso</h2><p class="muted">Marque os casos após estudar e acompanhe sua evolução.</p><div class="bar"><i id="overall-bar"></i></div><div id="category-bars"></div></div><div class="card"><h2>Roteiro recomendado</h2><p>1. Escolha um caso e tente resolver sem ver a resposta.</p><p>2. Revele a orientação e marque como estudado.</p><p>3. Faça o simulado e escreva ou dite sua resposta.</p><p>4. Anote no caderno e revise o resumo.</p><button class="btn primary" data-go="estudar">Começar a estudar</button></div></div></section>
 <section class="panel" id="simulado"><div class="row"><div><h2>Simulado prático</h2><p class="muted">Questões baseadas nos atendimentos registrados. As respostas não são enviadas a nenhum servidor.</p></div><span class="pill" id="quiz-progress">Questão 1</span></div><div class="card"><div class="row"><label for="quiz-mode">Formato do treino</label><select id="quiz-mode" style="max-width:270px"><option value="choice">Múltipla escolha</option><option value="written">Resposta escrita ou por áudio</option></select></div><div id="quiz-content"></div><div class="row" style="margin-top:18px"><button class="btn" id="quiz-check">Corrigir resposta</button><button class="btn primary" id="quiz-next">Próxima questão</button><button class="btn" id="quiz-restart">Recomeçar</button></div><div id="quiz-feedback" aria-live="polite"></div></div></section>
 <section class="panel" id="estudar"><div class="row"><div><h2>Treino de atendimento realista</h2><p class="muted">Você é o suporte. O cliente reage ao que você escreve; investigue, oriente e encerre quando estiver pronto. A referência real só aparece na avaliação.</p></div><span class="pill" id="chat-round">Treino prático</span></div><div class="card"><div class="filters"><label for="chat-module">Módulo</label><select id="chat-module" aria-label="Escolher módulo"></select><label for="chat-case">Problema / atendimento</label><select id="chat-case" aria-label="Escolher problema para simular"></select><button class="btn primary" id="chat-start" type="button">Iniciar atendimento</button><button class="btn" id="chat-random" type="button">Caso aleatório</button></div><div class="chat-window" id="chat-messages" aria-live="polite"><p class="muted">Escolha um caso e clique em Iniciar atendimento.</p></div><div class="chat-compose"><textarea id="chat-input" rows="3" placeholder="Escreva como se estivesse falando com o cliente..." aria-label="Sua mensagem para o cliente"></textarea><div class="row"><span class="muted tiny">Cliente com IA Gemini: faça login em Minha conta. O atendimento e a avaliação usam o caso real. É necessário configurar a chave Gemini no servidor.</span><button class="btn primary" id="chat-send" type="button">Enviar mensagem</button><button class="btn" id="chat-finish" type="button">Encerrar e avaliar</button></div></div><div id="chat-review" aria-live="polite"></div></div></section>

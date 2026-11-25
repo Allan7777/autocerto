@@ -21,6 +21,7 @@ Abra `index.html` em qualquer navegador moderno. Não há dependências externas
 - `site.css`: estilo compartilhado de todas as subpáginas e da pasta `copilot/` (cores, fontes, botões, formulários, cartões, tabelas). Cada página só tem em `<style>` o que é específico dela.
 - `site-nav.js`: menu lateral das subpáginas. **Para criar uma página nova no menu**, adicione uma linha na lista `ACADEMY` (ou `COPILOT`) no início desse arquivo e, na nova página, inclua `<link rel="stylesheet" href="./site.css">`, `<script src="./site-nav.js"></script>` logo após `<body>` e `class="page"` no `<main>`. Páginas dentro de `copilot/` usam `../` nos caminhos.
 - `fonts/`: fontes Archivo e Figtree, servidas pelo próprio site.
+- `theme.js`: tema claro/escuro. O botão fica no menu lateral de todas as páginas e a escolha é salva no navegador. As cores dos dois temas são variáveis no início de `academy.css` e `site.css` (bloco `:root[data-theme="dark"]` para o escuro). Em páginas novas, inclua `<script src="./theme.js"></script>` dentro do `<head>`.
 
 ## Publicar com GitHub Pages
 
