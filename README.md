@@ -13,7 +13,14 @@ Plataforma independente de estudos sobre fluxos de suporte do sistema AutoCerto,
 
 ## Executar
 
-Abra `index.html` em qualquer navegador moderno. Não há dependências externas.
+Abra `index.html` em qualquer navegador moderno. Não há dependências externas. Para testar localmente as páginas que carregam arquivos (como o questionário), use um servidor simples, por exemplo `python3 -m http.server`, e abra `http://localhost:8000`.
+
+## Estrutura visual
+
+- `academy.css`: estilo da página inicial (`index.html`).
+- `site.css`: estilo compartilhado de todas as subpáginas e da pasta `copilot/` (cores, fontes, botões, formulários, cartões, tabelas). Cada página só tem em `<style>` o que é específico dela.
+- `site-nav.js`: menu lateral das subpáginas. **Para criar uma página nova no menu**, adicione uma linha na lista `ACADEMY` (ou `COPILOT`) no início desse arquivo e, na nova página, inclua `<link rel="stylesheet" href="./site.css">`, `<script src="./site-nav.js"></script>` logo após `<body>` e `class="page"` no `<main>`. Páginas dentro de `copilot/` usam `../` nos caminhos.
+- `fonts/`: fontes Archivo e Figtree, servidas pelo próprio site.
 
 ## Publicar com GitHub Pages
 
